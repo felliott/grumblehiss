@@ -17,7 +17,13 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
+    var authuser = 'test',
+        authpass = 'test',
+        authkey = window.btoa(authuser + ':' + authpass);
+
+    $httpProvider.defaults.headers.common.Authorization = 'Basic ' + authkey;
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
