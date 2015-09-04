@@ -28,7 +28,7 @@ angular
     RestangularProvider.setBaseUrl("http://localhost:8000/v2");
     RestangularProvider.setDefaultHeaders({'Authorization': 'Basic ' + authkey});
     RestangularProvider.setRequestSuffix('/');
-    RestangularProvider.setResponseExtractor(function(response, operation) {
+    RestangularProvider.setResponseExtractor(function(response) {
         return response.data;
     });
     $routeProvider
