@@ -12,9 +12,9 @@ angular.module('fileApiTestappApp')
     $scope.thisNode = node;
     $scope.fileTree = node.getFiles().$object;
 
-    $scope.isFolder = function(file) { return file.attributes.item_type === 'folder'; };
+    $scope.isFolder = function(inode) { return inode.attributes.kind === 'folder'; };
     $scope.expandFolder = function(folder) {
-      folder.fileTree = Restangular.allUrl('files', folder.links.related.href).getList().$object;
+      folder.fileTree = Restangular.allUrl('files', folder.relationships.files.links.related).getList().$object;
     };
 
     $scope.deleteFile = function(file) {
