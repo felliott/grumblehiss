@@ -8,10 +8,6 @@
  * Controller of the fileApiTestappApp
  */
 angular.module('fileApiTestappApp')
-  .controller('MainCtrl', function () {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MainCtrl', function ($scope, MyNodes) {
+    $scope.nodeList = MyNodes.getList().$object;
   });

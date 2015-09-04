@@ -1,0 +1,15 @@
+
+
+<h3>Node: {{thisNode.attributes.title}}</h3>
+
+<ul>
+  <li ng-repeat="file in nodeFiles">
+    <pre>{{file | json}}</pre>
+  </li>
+</ul>
+
+
+
+<pre>{{thisNode.attributes | json}}</pre>
+
+<pre>{{thisNode.relationships | json}}</pre>
