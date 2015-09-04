@@ -5,7 +5,7 @@
     <a class="btn btn-default btn-xs" ng-click="child.showRaw = !child.showRaw">?</a>
     <a ng-show="isFolder(child)" class="btn btn-default btn-xs" ng-click="expandFolder(child)">+</a>
     <a ng-show="!isFolder(child)" class="btn btn-danger btn-xs" ng-click="deleteFile(child)">-</a>
-    <a ng-href="{{child.links.self}}">{{child.attributes.kind}}: {{child.attributes.name}}</a>
+    <a ng-href="{{child.links.download}}">{{child.attributes.kind}}: {{child.attributes.name}}</a>
     <pre ng-show="child.showRaw">{{child | json}}</pre>
   </div>
   <ol ui-tree-nodes="" ng-model="child.fileTree">
