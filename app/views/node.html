@@ -2,14 +2,51 @@
 
 <h3>Node: {{thisNode.attributes.title}}</h3>
 
-<ul>
+<h4>Files</h4>
+<ul class="list-unstyled">
   <li ng-repeat="file in nodeFiles">
-    <pre>{{file | json}}</pre>
+    <a class="btn btn-default btn-xs" ng-click="file.showRaw = !file.showRaw">?</a>
+    <a ng-show="isFolder(file)" class="btn btn-default btn-xs" ng-click="expandFolder(file)">+</a>
+    <a ng-href="{{file.links.self}}">{{file.attributes.item_type}}: {{file.attributes.name}}</a>
+    <pre ng-show="file.showRaw">{{file | json}}</pre>
+    <div ng-show="file.dir_contents">
+      <ul>
+        <li ng-repeat="child in file.dir_contents">
+          <a class="btn btn-default btn-xs" ng-click="child.showRaw = !child.showRaw">?</a>
+          <a ng-show="idFolder(child)" class="btn btn-default btn-xs" ng-click="expandFolder(child)">+</a>
+          <a ng-href="{{child.links.self}}">{{child.attributes.item_type}}: {{child.attributes.name}}</a>
+          <pre ng-show="child.showRaw">{{child | json}}</pre>
+        </li>
+      </ul>
+    </div>
+    <hr>
   </li>
 </ul>
 
+<h4>
+  All
+  <a class="btn btn-default btn-xs" ng-click="thisNode.showAll = !thisNode.showAll">?</a>
+</h4>
+<pre ng-show="thisNode.showAll">{{thisNode | json}}</pre>
+
+<h4>
+  Attributes
+  <a class="btn btn-default btn-xs" ng-click="thisNode.showAttr = !thisNode.showAttr">?</a>
+</h4>
+<pre ng-show="thisNode.showAttr">{{thisNode.attributes | json}}</pre>
+
+<h4>
+  Links
+  <a class="btn btn-default btn-xs" ng-click="thisNode.showLink = !thisNode.showLink">?</a>
+</h4>
+<pre ng-show="thisNode.showLink">{{thisNode.links | json}}</pre>
+
+<h4>
+  Relationships
+  <a class="btn btn-default btn-xs" ng-click="thisNode.showRel = !thisNode.showRel">?</a>
+</h4>
+<pre ng-show="thisNode.showRel">{{thisNode.relationships | json}}</pre>
 
 
-<pre>{{thisNode.attributes | json}}</pre>
 
-<pre>{{thisNode.relationships | json}}</pre>
+
