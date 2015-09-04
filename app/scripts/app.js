@@ -21,17 +21,23 @@ angular
     'angularFileUpload'
   ])
   .config(function ($routeProvider, $httpProvider, RestangularProvider) {
-    var authuser = 'test',
-        authpass = 'test',
-        authkey = window.btoa(authuser + ':' + authpass);
 
     RestangularProvider.setBaseUrl("http://localhost:8000/v2");
-    RestangularProvider.setDefaultHeaders({'Authorization': 'Basic ' + authkey});
     RestangularProvider.setRequestSuffix('/');
     RestangularProvider.setResponseExtractor(function(response) {
         return response.data;
     });
+    RestangularProvider.setRestangularFields({
+      selfLink: 'links.self'
+    });
+
+
+
     $routeProvider
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl'
+      })
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl',
@@ -53,6 +59,16 @@ angular
         }
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/login'
       });
-  });
+  })
+  .run(['$rootScope', '$location', '$http',
+    function ($rootScope, $location, $http) {
+      $rootScope.$on('$locationChangeStart', function () {
+        // redirect to login page if not logged in
+        if ($location.path() !== '/login' && !$http.defaults.headers.common['Authorization']) {
+          $location.path('/login');
+        }
+      });
+    }
+  ]);

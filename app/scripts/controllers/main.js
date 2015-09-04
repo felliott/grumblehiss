@@ -15,4 +15,20 @@ angular.module('fileApiTestappApp')
         node.files = Nodes.one(node.id).getFiles().$object;
       });
     });
+  })
+  .controller('LoginCtrl', function ($scope, $location, AuthService) {
+    $scope.loginFailed = false;
+
+    $scope.login = function(username, password) {
+      $scope.loginFailed = false;
+      AuthService.Login(username, password).then(
+        function(response) {
+          AuthService.SetCredentials(username, password);
+          $location.path('/');
+        },
+        function(response) {
+          $scope.loginFailed = true;
+        }
+      );
+    };
   });
