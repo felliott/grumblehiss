@@ -28,7 +28,7 @@ services.factory(
   'Nodes',
   ['Restangular', '$upload',
    function (Restangular, $upload) {
-     var serviceName = '/nodes';
+     var serviceName = 'nodes';
 
      Restangular.extendCollection(serviceName, function(collection) {
        return collection;
@@ -47,14 +47,28 @@ services.factory(
   ]
 );
 
-// services.factory(
-//   'Files',
-//   ['Restangular', '$upload',
-//    function (Restangular, $upload) {
+services.factory(
+  'Files',
+  ['Restangular', '$upload',
+   function (Restangular, $upload) {
+     var serviceName = 'files';
 
-//    }
-//   ]
-// );
+     Restangular.extendCollection(serviceName, function(collection) {
+       return collection;
+     });
+
+     Restangular.extendModel(serviceName, function(model) {
+       return model;
+     });
+
+     var thisService = Restangular.withConfig(function(RestangularConfigurer) {
+     }).service(serviceName);
+
+     return thisService;
+
+   }
+  ]
+);
 
 
 
