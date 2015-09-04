@@ -1,17 +1,14 @@
 <div class="row">
   <h3>Your Nodes</h3>
-  <ul>
+  <ul class="list-unstyled">
     <li ng-repeat="node in nodeList">
       <div class="row">
-        <h3><a ng-href="#/node/{{node.id}}">{{node.attributes.title}}</a></h3>
-
-        <h4>Files</h4>
-        <ul>
-          <li ng-repeat="file in node.files">
-            <pre>{{file | json}}</pre>
-          </li>
-        </ul>
-
+        <h4>
+          <a class="btn btn-default btn-xs" ng-click="node.showAll = !node.showAll">?</a>
+          <a ng-href="#/node/{{node.id}}">{{node.attributes.title}}</a>
+        </h4>
+        <pre ng-show="node.showAll">{{node | json}}</pre>
+        <hr>
     </li>
   </ul>
 </div>

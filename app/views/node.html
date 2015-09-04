@@ -24,28 +24,31 @@
   </ol>
 </div>
 
-<h4>
-  All
+
+<br><br>
+<h4>Node Properties</h4>
+<h5>
   <a class="btn btn-default btn-xs" ng-click="thisNode.showAll = !thisNode.showAll">?</a>
-</h4>
+  All
+</h5>
 <pre ng-show="thisNode.showAll">{{thisNode | json}}</pre>
 
-<h4>
-  Attributes
+<h5>
   <a class="btn btn-default btn-xs" ng-click="thisNode.showAttr = !thisNode.showAttr">?</a>
-</h4>
+  Attributes
+</h5>
 <pre ng-show="thisNode.showAttr">{{thisNode.attributes | json}}</pre>
 
-<h4>
-  Links
+<h5>
   <a class="btn btn-default btn-xs" ng-click="thisNode.showLink = !thisNode.showLink">?</a>
-</h4>
+  Links
+</h5>
 <pre ng-show="thisNode.showLink">{{thisNode.links | json}}</pre>
 
-<h4>
-  Relationships
+<h5>
   <a class="btn btn-default btn-xs" ng-click="thisNode.showRel = !thisNode.showRel">?</a>
-</h4>
+  Relationships
+</h5>
 <pre ng-show="thisNode.showRel">{{thisNode.relationships | json}}</pre>
 
 
