@@ -34,6 +34,7 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/restangular/dist/restangular.js',
       'bower_components/ng-file-upload/angular-file-upload.js',
+      'bower_components/angular-ui-tree/dist/angular-ui-tree.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

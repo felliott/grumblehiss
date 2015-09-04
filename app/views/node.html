@@ -1,28 +1,28 @@
 
 
+<script type="text/ng-template" id="child_renderer.html">
+  <div ui-tree-handle>
+    <a class="btn btn-default btn-xs" ng-click="child.showRaw = !child.showRaw">?</a>
+    <a ng-show="isFolder(child)" class="btn btn-default btn-xs" ng-click="expandFolder(child)">+</a>
+    <a ng-show="!isFolder(child)" class="btn btn-danger btn-xs" ng-click="deleteFile(child)">-</a>
+    <a ng-href="{{child.links.self}}">{{child.attributes.item_type}}: {{child.attributes.name}}</a>
+    <pre ng-show="child.showRaw">{{child | json}}</pre>
+  </div>
+  <ol ui-tree-nodes="" ng-model="child.fileTree">
+    <li ng-repeat="child in child.fileTree" ui-tree-node ng-include="'child_renderer.html'">
+    </li>
+  </ol>
+</script>
+
+
 <h3>Node: {{thisNode.attributes.title}}</h3>
 
 <h4>Files</h4>
-<ul class="list-unstyled">
-  <li ng-repeat="file in nodeFiles">
-    <a class="btn btn-default btn-xs" ng-click="file.showRaw = !file.showRaw">?</a>
-    <a ng-show="isFolder(file)" class="btn btn-default btn-xs" ng-click="expandFolder(file)">+</a>
-    <a ng-href="{{file.links.self}}">{{file.attributes.item_type}}: {{file.attributes.name}}</a>
-    <pre ng-show="file.showRaw">{{file | json}}</pre>
-    <div ng-show="file.dir_contents">
-      <ul>
-        <li ng-repeat="child in file.dir_contents">
-          <a class="btn btn-default btn-xs" ng-click="child.showRaw = !child.showRaw">?</a>
-          <a ng-show="idFolder(child)" class="btn btn-default btn-xs" ng-click="expandFolder(child)">+</a>
-          <a ng-show="!idFolder(child)" class="btn btn-danger btn-xs" ng-click="deleteFile(child)">-</a>
-          <a ng-href="{{child.links.self}}">{{child.attributes.item_type}}: {{child.attributes.name}}</a>
-          <pre ng-show="child.showRaw">{{child | json}}</pre>
-        </li>
-      </ul>
-    </div>
-    <hr>
-  </li>
-</ul>
+<div ui-tree>
+  <ol ui-tree-nodes="" ng-model="fileTree" id="tree-root">
+    <li ng-repeat="child in fileTree" ui-tree-node ng-include="'child_renderer.html'"></li>
+  </ol>
+</div>
 
 <h4>
   All
