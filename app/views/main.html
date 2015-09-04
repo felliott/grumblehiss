@@ -1,9 +1,17 @@
 <div class="row">
   <h3>Your Nodes</h3>
-
   <ul>
     <li ng-repeat="node in nodeList">
-      <a ng-href="#/node/{{node.id}}">{{node.id}}</a>
+      <div class="row">
+        <h3><a ng-href="#/node/{{node.id}}">{{node.attributes.title}}</a></h3>
+
+        <h4>Files</h4>
+        <ul>
+          <li ng-repeat="file in node.files">
+            <pre>{{file | json}}</pre>
+          </li>
+        </ul>
+
     </li>
   </ul>
 </div>

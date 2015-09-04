@@ -35,7 +35,7 @@ services.factory(
      });
 
      Restangular.extendModel(serviceName, function(model) {
-       model.getFiles = function() { return model.getList('files'); };
+       model.getFiles = function() { return model.getList('files/'); };
        return model;
      });
 
