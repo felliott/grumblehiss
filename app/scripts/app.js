@@ -28,17 +28,8 @@ angular
     RestangularProvider.setBaseUrl("http://localhost:8000/v2");
     RestangularProvider.setDefaultHeaders({'Authorization': 'Basic ' + authkey});
     RestangularProvider.setRequestSuffix('/');
-    RestangularProvider.addResponseInterceptor(function(data, operation, what, url, response, deferred) {
-      var extractedData;
-      // .. to look for getList operations
-      if (operation === "getList") {
-        // .. and handle the data and meta data
-        extractedData = data.data;
-        extractedData.links = data.links;
-      } else {
-        extractedData = data.data;
-      }
-      return extractedData;
+    RestangularProvider.setResponseExtractor(function(response, operation) {
+        return response.data;
     });
     $routeProvider
       .when('/', {
