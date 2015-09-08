@@ -8,18 +8,29 @@
   }
 
   .grouping { margin-top: 5px; }
+
+  .inodeName { padding-left: 3em; }
 </style>
 
 
 <script type="text/ng-template" id="child_renderer.html">
   <div ui-tree-handle>
-    {{child.attributes.kind}}: <a ng-href="{{child.links.download}}">{{child.attributes.name}}</a>
-    <div>
+    <span ng-show="isFile(child)">
+      <span class="glyphicon glyphicon-file"></span>
+    </span>
+    <span ng-show="isFolder(child)">
+      <a ng-click="toggleFolderOpen(child)"><span class="glyphicon" ng-class="{'glyphicon-menu-right': !isFolderExpanded(child), 'glyphicon-menu-down': isFolderExpanded(child)}"></span></a>
+    </span>
+
+    <span class="inodeName">{{child.attributes.name}}</span>
+    <a class="pull-right" ng-click="toggleShowActions(child)"><span class="glyphicon glyphicon-eye-open"></span></a>
+    <span class="clearfix"></span>
+
+    <div ng-show="showActions(child)">
 
       <div class="grouping">
         <div class="input-group">
           <a class="btn btn-default" ng-click="child.showRaw = !child.showRaw">Show Raw Repsonse</a>
-          <a ng-show="isFolder(child)" class="btn btn-default" ng-click="expandFolder(child)">Expand Folder</a>
           <a ng-show="isFile(child)" class="btn btn-default" ng-href="{{child.links.download}}">Download</a>
         </div>
       </div>
@@ -70,20 +81,20 @@
       <pre ng-show="child.showRaw">{{child | json}}</pre>
     </div>
   </div>
-  <ol ui-tree-nodes="" ng-model="child.fileTree">
+  <ul class="list-unstyled" ng-show="isFolderExpanded(child)" ui-tree-nodes="" ng-model="child.fileTree">
     <li class="moot" ng-repeat="child in child.fileTree" ui-tree-node ng-include="'child_renderer.html'">
     </li>
-  </ol>
+  </ul>
 </script>
 
 
 <h3>Node: {{thisNode.attributes.title}}</h3>
 
-<h4>Files</h4>
+<h4>Browse</h4>
 <div ui-tree>
-  <ol ui-tree-nodes="" ng-model="fileTree" id="tree-root">
+  <ul class="list-unstyled" ui-tree-nodes="" ng-model="fileTree" id="tree-root">
     <li ng-repeat="child in fileTree" ui-tree-node ng-include="'child_renderer.html'"></li>
-  </ol>
+  </ul>
 </div>
 
 

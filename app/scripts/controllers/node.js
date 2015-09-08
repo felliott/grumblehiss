@@ -12,20 +12,28 @@ angular.module('grumblehissApp')
     $scope.thisNode = node;
     $scope.fileTree = node.getFiles().$object;
 
-    $scope.isFolder = function(inode) { return inode.attributes.kind === 'folder'; };
     $scope.isFile   = function(inode) { return inode.attributes.kind === 'file'; };
+    $scope.isFolder = function(inode) { return inode.attributes.kind === 'folder'; };
+    $scope.isFolderExpanded = function(folder) { return folder.showContents; };
+
+    $scope.showSubtree = function(folder) {
+      if (!folder.fileTree) {
+        $scope.expandFolder(folder);
+      }
+
+      folder.showContents = true;
+    };
+    $scope.hideSubtree = function(folder) { folder.showContents = false; };
+    $scope.toggleFolderOpen = function(folder) {
+      $scope.isFolderExpanded(folder) ? $scope.hideSubtree(folder) : $scope.showSubtree(folder);
+    };
+
     $scope.expandFolder = function(folder) {
       folder.fileTree = Restangular.allUrl('files', folder.relationships.files.links.related).getList().$object;
     };
 
-    $scope.deleteFile = function(file) {
-      if (window.confirm("Really?")) {
-        file.remove().then(
-          function() { console.log('deleted'); },
-          function() { console.log('nope'); }
-        );
-      }
-    };
+    $scope.showActions = function(child) { return child.showActions; };
+    $scope.toggleShowActions = function(child) { child.showActions = !child.showActions; };
 
 
     // GET
