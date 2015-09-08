@@ -127,20 +127,11 @@ angular.module('grumblehissApp')
     };
 
     // DELETE
-    $scope.rmFile = function(child) {  // file
-      if (child.attributes.type === 'folder') {
-        throw 'delete() is not valid for a folder. Perhaps you wanted rmTree()?';
-      }
-      return $http.delete(child.links.download);
+    $scope.deleteThis = function(child) {  // file
+      var url = child.attributes.kind === 'file'
+            ? child.links.download
+            : child.links.upload;
+      return $http.delete(url);
     };
-
-    $scope.rmTree = function(child) { // folder
-      if (child.attributes.type === 'file') {
-        throw 'rmTree() is not valid for a file. Perhaps you wanted delete()?';
-      }
-      return $http.delete(child.links.upload);
-    };
-
-
 
   });
