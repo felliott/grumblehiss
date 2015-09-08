@@ -92,8 +92,8 @@
       </div>
 
       <div class="grouping">
-        <h5>Move / Copy</h5>
-        <select class="form-control" ng-model="moveTarget" ng-options="folder as folder.attributes.name for folder in allFolders"></select>
+        <h5>Move / Copy To</h5>
+        <select class="form-control" ng-model="moveTarget" ng-options="folder.attributes.path as folder.attributes.name for folder in allFolders"></select>
         <label><input type="radio" ng-model="moveAction" value="move">Move</label>
         <label><input type="radio" ng-model="moveAction" value="copy">Copy</label>
         <a ng-click="moveOrCopyTo(inspectee, moveAction, moveTarget)" class="btn btn-default">Move/Copy</a>
