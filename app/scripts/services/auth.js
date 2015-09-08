@@ -5,8 +5,8 @@ var services = angular.module('grumblehissApp');
 // mostly cribbed from http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx
 
 services.factory('AuthService',
-  ['$http', 'Restangular', '$cookieStore',
-   function($http, Restangular, $cookieStore) {
+  ['$http', 'Restangular', '$cookieStore', 'API_CONFIG',
+   function($http, Restangular, $cookieStore, API_CONFIG) {
      var service = {};
 
      function _getBasicAuth(username, password) {
@@ -15,7 +15,7 @@ services.factory('AuthService',
 
      service.Login = function(username, password) {
        return $http.get(
-         'http://localhost:8000/v2/users/me/',
+         API_CONFIG.BASE_URL + '/users/me/',
          { headers: {'Authorization':_getBasicAuth(username, password)} }
        );
      };

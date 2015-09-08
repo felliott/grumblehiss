@@ -20,9 +20,9 @@ angular
     'restangular',
     'ngFileUpload'
   ])
-  .config(function ($routeProvider, $httpProvider, RestangularProvider) {
+  .config(function ($routeProvider, $httpProvider, RestangularProvider, API_CONFIG) {
 
-    RestangularProvider.setBaseUrl("http://localhost:8000/v2");
+    RestangularProvider.setBaseUrl(API_CONFIG.BASE_URL);
     RestangularProvider.setRequestSuffix('/');
     RestangularProvider.setResponseExtractor(function(response) {
         return response.data;
@@ -30,8 +30,6 @@ angular
     RestangularProvider.setRestangularFields({
       selfLink: 'links.self'
     });
-
-
 
     $routeProvider
       .when('/login', {
@@ -72,4 +70,7 @@ angular
         }
       });
     }
-  ]);
+  ])
+  .constant( 'API_CONFIG', {
+    BASE_URL: "http://localhost:8000/v2"
+  });
