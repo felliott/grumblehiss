@@ -69,7 +69,7 @@
 
   </div>
   <div class="col-md-6">
-    <h4>File/Folder properties</h4>
+    <h4 ng-show="inspectee">{{ isFolder(inspectee) ? 'Folder: ' : 'File: '}}{{inspectee.attributes.name}}</h4>
 
     <div ng-show="inspectee">
 
@@ -86,24 +86,23 @@
 
       <div class="grouping">
         <div class="input-group">
-          <input type="text" class="form-control" ng-model="inspectee.attributes.name" />
+          <input type="text" class="form-control" ng-model="inspecteeRename" />
           <span class="input-group-btn">
-            <a class="btn btn-default" ng-click="renameTo(inspectee, inspectee.attributes.name)">Rename</a>
+            <a class="btn btn-default" ng-click="renameTo(inspectee, inspecteeRename)">Rename</a>
           </span>
         </div>
       </div>
 
       <div class="grouping">
-        <div class="input-group">
-          <input type="text" class="form-control" ng-model="inspectee.attributes.path" />
-          <span class="input-group-btn">
-            <a ng-click="moveTo(inspectee, inspectee.attributes.path)" class="btn btn-default">Move/Copy</a>
-          </span>
+        <select class="form-control" ng-model="moveTarget" ng-options="folder as folder.attributes.name for folder in allFolders"></select>
+        <label><input type="radio" ng-model="moveAction" value="move">Move</label>
+        <label><input type="radio" ng-model="moveAction" value="copy">Copy</label>
+        <a ng-click="moveOrCopyTo(inspectee, moveAction, moveTarget)" class="btn btn-default">Move/Copy</a>
       </div>
 
       <div ng-show="isFolder(inspectee)" class="grouping">
-        <div class="btn btn-primary" ngf-select ng-model="file" name="file">Select</div>
-        <a class="btn btn-default" ng-click="uploadFile(inspectee, file)">Upload File</a>
+        <div class="btn btn-primary" ngf-select ng-model="inspecteeNewFile" name="file">Select</div>
+        <a class="btn btn-default" ng-click="uploadFile(inspectee, inspecteeNewFile)">Upload File</a>
       </div>
 
       <div ng-show="isFile(inspectee)" class="grouping">
@@ -113,9 +112,9 @@
 
       <div ng-show="isFolder(inspectee)" class="grouping">
         <div class="input-group">
-          <input type="text" class="form-control" ng-model="newFolderName" />
+          <input type="text" class="form-control" ng-model="inspecteeNewFolder" />
           <span class="input-group-btn">
-            <a ng-click="createSubfolder(inspectee, newFolderName)" class="btn btn-default">Create Subfolder</a>
+            <a ng-click="createSubfolder(inspectee, inspecteeNewFolder)" class="btn btn-default">Create Subfolder</a>
           </span>
         </div>
       </div>

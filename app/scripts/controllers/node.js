@@ -10,10 +10,22 @@
 angular.module('grumblehissApp')
   .controller('NodeCtrl', function ($scope, node, Restangular, $http, Upload) {
     $scope.thisNode = node;
-    $scope.fileTree = node.getFiles().$object;
+    node.getFiles().then( function(res) {
+      $scope.fileTree = res;
+      $scope.$broadcast('fileTree::updated', {fileTree: res});
+    });
 
-    $scope.isFile   = function(inode) { return inode.attributes.kind === 'file'; };
-    $scope.isFolder = function(inode) { return inode.attributes.kind === 'folder'; };
+    $scope.allFolders = [];
+    $scope.$on('fileTree::updated', function(event, args) {
+      _.forEach(args.fileTree, function(child) {
+        if (child.attributes.kind === 'folder') {
+          $scope.allFolders.push(child);
+        }
+      });
+    });
+
+    $scope.isFile   = function(inode) { return inode && inode.attributes.kind === 'file'; };
+    $scope.isFolder = function(inode) { return inode && inode.attributes.kind === 'folder'; };
     $scope.isFolderExpanded = function(folder) { return folder.showContents; };
 
     $scope.showSubtree = function(folder) {
@@ -29,7 +41,10 @@ angular.module('grumblehissApp')
     };
 
     $scope.expandFolder = function(folder) {
-      folder.fileTree = Restangular.allUrl('files', folder.relationships.files.links.related).getList().$object;
+      Restangular.allUrl('files', folder.relationships.files.links.related).getList().then( function(res) {
+        folder.fileTree = res;
+        $scope.$broadcast('fileTree::updated', {fileTree: res});
+      });
     };
 
     $scope.showActions = function(child) { return child.showActions; };
@@ -37,9 +52,10 @@ angular.module('grumblehissApp')
 
 
     $scope.inspectChild = function(child) {
-      $scope.inspectFile = '';
-      $scope.inspectName = '';
-
+      $scope.inspecteeNewFile = {};
+      $scope.inspecteeNewFolder = '';
+      $scope.inspecteeRename = '';
+      $scope.moveAction = '';
       $scope.inspectee = child;
     };
 
@@ -102,16 +118,11 @@ angular.module('grumblehissApp')
         provider: child.attributes.provider
       });
     };
-    $scope.moveTo = function(child, path) {
+    $scope.moveOrCopyTo = function(child, action, moveDir) {
       return $http.post(child.links.move, {
-        action: 'move', path: path
+        action: action, path: moveDir.attributes.path,
+        provider: moveDir.attributes.provider
         // conflict: true, rename: 'rename',
-      });
-    };
-    $scope.copyTo = function(child, path) { // file+folder
-      return $http.post(child.links.move, {
-        action: 'copy', path: 'path', rename: 'rename',
-        conflict: true
       });
     };
 
