@@ -62,9 +62,15 @@ angular
         redirectTo: '/login'
       });
   })
-  .run(['$rootScope', '$location', '$http',
-    function ($rootScope, $location, $http) {
+  .run(['$rootScope', '$location', '$cookieStore', '$http', 'Restangular',
+    function ($rootScope, $location, $cookieStore, $http, Restangular) {
       $rootScope.$on('$locationChangeStart', function () {
+        var basicAuth = $cookieStore.get('basicAuth');
+        if (basicAuth) {
+          $http.defaults.headers.common['Authorization'] = basicAuth;
+          Restangular.setDefaultHeaders({'Authorization': basicAuth});
+        }
+
         // redirect to login page if not logged in
         if ($location.path() !== '/login' && !$http.defaults.headers.common['Authorization']) {
           $location.path('/login');

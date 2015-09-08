@@ -5,7 +5,8 @@ var services = angular.module('fileApiTestappApp');
 // mostly cribbed from http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx
 
 services.factory('AuthService',
-  ['$http', 'Restangular', function($http, Restangular) {
+  ['$http', 'Restangular', '$cookieStore',
+   function($http, Restangular, $cookieStore) {
      var service = {};
 
      function _getBasicAuth(username, password) {
@@ -20,13 +21,16 @@ services.factory('AuthService',
      };
 
      service.SetCredentials = function (username, password) {
-       $http.defaults.headers.common['Authorization'] = _getBasicAuth(username, password);
-       Restangular.setDefaultHeaders({'Authorization': _getBasicAuth(username, password)});
+       var basicAuth = _getBasicAuth(username, password);
+       $http.defaults.headers.common['Authorization'] = basicAuth;
+       Restangular.setDefaultHeaders({'Authorization': basicAuth});
+       $cookieStore.put('basicAuth', basicAuth);
      };
 
      service.ClearCredentials = function() {
        delete $http.defaults.headers.common['Authorization'];
        Restangular.setDefaultHeaders({'Authorization': ''});
+       $cookieStore.remove('basicAuth');
      };
 
      return service;
