@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name fileApiTestappApp.controller:NodeCtrl
+ * @name grumblehissApp.controller:NodeCtrl
  * @description
  * # NodeCtrl
- * Controller of the fileApiTestappApp
+ * Controller of the grumblehissApp
  */
-angular.module('fileApiTestappApp')
+angular.module('grumblehissApp')
   .controller('NodeCtrl', function ($scope, node, Restangular, $http, Upload) {
     $scope.thisNode = node;
     $scope.fileTree = node.getFiles().$object;

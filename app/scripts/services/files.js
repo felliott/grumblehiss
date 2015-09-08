@@ -1,6 +1,6 @@
 'use strict';
 
-var services = angular.module('fileApiTestappApp');
+var services = angular.module('grumblehissApp');
 
 services.factory(
   'MyNodes',

@@ -1,6 +1,6 @@
 'use strict';
 
-var services = angular.module('fileApiTestappApp');
+var services = angular.module('grumblehissApp');
 
 // mostly cribbed from http://jasonwatmore.com/post/2014/05/26/AngularJS-Basic-HTTP-Authentication-Example.aspx
 

@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name fileApiTestappApp.controller:MainCtrl
+ * @name grumblehissApp.controller:MainCtrl
  * @description
  * # MainCtrl
- * Controller of the fileApiTestappApp
+ * Controller of the grumblehissApp
  */
-angular.module('fileApiTestappApp')
+angular.module('grumblehissApp')
   .controller('MainCtrl', function ($scope, MyNodes, Nodes) {
     MyNodes.getList().then( function(res) {
       $scope.nodeList = res;

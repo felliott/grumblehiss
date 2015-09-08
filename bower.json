@@ -1,5 +1,5 @@
 {
-  "name": "file-api-testapp",
+  "name": "grumblehiss",
   "version": "0.0.0",
   "dependencies": {
     "angular": "1.3.18",
@@ -19,7 +19,7 @@
     "angular-mocks": "1.3.18"
   },
   "appPath": "app",
-  "moduleName": "fileApiTestappApp",
+  "moduleName": "grumblehissApp",
   "overrides": {
     "bootstrap": {
       "main": [

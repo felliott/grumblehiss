@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name fileApiTestappApp
+ * @name grumblehissApp
  * @description
- * # fileApiTestappApp
+ * # grumblehissApp
  *
  * Main module of the application.
  */
 angular
-  .module('fileApiTestappApp', [
+  .module('grumblehissApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
