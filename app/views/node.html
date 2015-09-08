@@ -25,19 +25,19 @@
       </div>
 
       <div class="grouping">
+        <a title="delete" ng-show="isFile(child)" class="btn btn-danger"
+           ng-click="rmFile(child)">Delete</a>
+        <a title="delete" ng-show="isFolder(child)" class="btn btn-danger"
+           ng-click="rmTree(child)">Delete</a>
+      </div>
+
+      <div class="grouping">
         <div class="input-group">
           <input type="text" class="form-control" ng-model="child.attributes.name" />
           <span class="input-group-btn">
             <a class="btn btn-default" ng-click="renameTo(child, child.attributes.name)">Rename</a>
           </span>
         </div>
-      </div>
-
-      <div class="grouping">
-        <a title="delete" ng-show="isFile(child)" class="btn btn-danger"
-           ng-click="rmFile(child)">Delete</a>
-        <a title="delete" ng-show="isFolder(child)" class="btn btn-danger"
-           ng-click="rmTree(child)">Delete</a>
       </div>
 
       <div class="grouping">
