@@ -65,6 +65,14 @@ angular.module('grumblehissApp')
       return $http.get(child.links.download);
     };
 
+    $scope.downloadUrlFor = function(child) {
+      if (child.attributes.kind === 'file') {
+        return child.links.download;
+      }
+      return child.links.upload + '?zip=';
+    };
+
+
     // PUT
     $scope.createSubfolder = function(child, folderName) {
       if (child.attributes.kind !== 'folder') {

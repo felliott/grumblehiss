@@ -76,7 +76,7 @@
       <div class="grouping">
         <div class="input-group">
           <a class="btn btn-default" ng-click="inspectee.showRaw = !inspectee.showRaw">Show Raw Repsonse</a>
-          <a ng-show="isFile(inspectee)" class="btn btn-default" ng-href="{{inspectee.links.download}}">Download</a>
+          <a class="btn btn-default" ng-href="{{downloadUrlFor(inspectee)}}">Download</a>
           <a class="btn btn-danger" ng-click="deleteThis(inspectee)">Delete</a>
         </div>
       </div>
