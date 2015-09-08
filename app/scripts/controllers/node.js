@@ -13,6 +13,7 @@ angular.module('grumblehissApp')
     $scope.fileTree = node.getFiles().$object;
 
     $scope.isFolder = function(inode) { return inode.attributes.kind === 'folder'; };
+    $scope.isFile   = function(inode) { return inode.attributes.kind === 'file'; };
     $scope.expandFolder = function(folder) {
       folder.fileTree = Restangular.allUrl('files', folder.relationships.files.links.related).getList().$object;
     };
@@ -27,30 +28,37 @@ angular.module('grumblehissApp')
     };
 
 
-    $scope.renameEntity = function(child, newName) {
-      return $http.post(child.links.move, {
-        action: 'move', path: child.attributes.path, rename: newName
-      });
-    };
-
-
+    // GET
     $scope.download = function(child) {
       return $http.get(child.links.download);
     };
 
-
-    // $scope.updateFile = function(child) { // file
-    //   return $http.put(child.links.upload, {});
-    // };
-
+    // PUT
     $scope.createSubfolder = function(child, folderName) {
       if (child.attributes.kind !== 'folder') {
         throw 'nope';
       }
       return $http.put(child.links.new_folder, '', {params: {name: folderName}});
     };
-
     $scope.uploadFile = function (child, file) {
+        Upload.http({
+          method: 'PUT',
+          url: child.links.upload,
+          data: file,
+          params: {
+            kind: 'file',
+            name: file.name
+          }
+        }).progress(function (evt) {
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        }).success(function (data, status, headers, config) {
+            console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+        }).error(function (data, status, headers, config) {
+            console.log('error status: ' + status);
+        });
+    };
+    $scope.updateFile = function(child, file) { // file
         Upload.http({
           method: 'PUT',
           url: child.links.upload,
@@ -70,13 +78,18 @@ angular.module('grumblehissApp')
     };
 
 
+    // POST
+    $scope.renameEntity = function(child, newName) {
+      return $http.post(child.links.move, {
+        action: 'move', path: child.attributes.path, rename: newName
+      });
+    };
     $scope.moveTo = function(child, path) {
       return $http.post(child.links.move, {
         action: 'move', path: path
         // conflict: true, rename: 'rename',
       });
     };
-
     $scope.copyTo = function(child, path) { // file+folder
       return $http.post(child.links.move, {
         action: 'copy', path: 'path', rename: 'rename',
