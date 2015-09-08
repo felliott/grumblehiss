@@ -115,13 +115,15 @@ angular.module('grumblehissApp')
       return $http.post(child.links.move, {
         action: 'move', rename: newName,
         path: child.attributes.path,
-        provider: child.attributes.provider
+        provider: child.attributes.provider,
+        resource: $scope.thisNode.id
       });
     };
     $scope.moveOrCopyTo = function(child, action, moveDir) {
       return $http.post(child.links.move, {
         action: action, path: moveDir.attributes.path,
-        provider: moveDir.attributes.provider
+        provider: moveDir.attributes.provider,
+        resource: $scope.thisNode.id
         // conflict: true, rename: 'rename',
       });
     };
