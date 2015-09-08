@@ -79,7 +79,7 @@ angular.module('grumblehissApp')
 
 
     // POST
-    $scope.renameEntity = function(child, newName) {
+    $scope.renameTo = function(child, newName) {
       return $http.post(child.links.move, {
         action: 'move', path: child.attributes.path, rename: newName
       });
