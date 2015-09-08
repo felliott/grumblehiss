@@ -39,16 +39,16 @@ angular.module('grumblehissApp')
     };
 
 
-    $scope.createSubfolder = function(child) {
-      if (child.attributes.kind !== 'folder') {
-        throw 'nope';
-      }
-      return $http.put(child.links.new_folder, {});
-    };
-
     // $scope.updateFile = function(child) { // file
     //   return $http.put(child.links.upload, {});
     // };
+
+    $scope.createSubfolder = function(child, folderName) {
+      if (child.attributes.kind !== 'folder') {
+        throw 'nope';
+      }
+      return $http.put(child.links.new_folder, '', {params: {name: folderName}});
+    };
 
     $scope.uploadFile = function (child, file) {
         Upload.http({

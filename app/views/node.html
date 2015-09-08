@@ -48,7 +48,7 @@
 
       <div ng-show="isFolder(child)" class="grouping">
           <div class="btn btn-primary" ngf-select ng-model="file" name="file">Select</div>
-          <a class="btn btn-default" ng-click="uploadFile(child, file)">upload</a>
+          <a class="btn btn-default" ng-click="uploadFile(child, file)">Upload File</a>
       </div>
 
       <div ng-show="isFolder(child)" class="grouping">
@@ -59,6 +59,7 @@
           </span>
         </div>
       </div>
+
       <pre ng-show="child.showRaw">{{child | json}}</pre>
     </div>
   </div>
