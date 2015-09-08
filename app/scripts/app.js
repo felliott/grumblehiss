@@ -43,11 +43,6 @@ angular
         controller: 'MainCtrl',
         controllerAs: 'main'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl',
-        controllerAs: 'about'
-      })
       .when('/node/:nodeId', {
         templateUrl: 'views/node.html',
         controller: 'NodeCtrl',

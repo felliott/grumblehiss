@@ -36,6 +36,14 @@ angular.module('grumblehissApp')
     $scope.toggleShowActions = function(child) { child.showActions = !child.showActions; };
 
 
+    $scope.inspectChild = function(child) {
+      $scope.inspectFile = '';
+      $scope.inspectName = '';
+
+      $scope.inspectee = child;
+    };
+
+
     // GET
     $scope.download = function(child) {
       return $http.get(child.links.download);
@@ -89,7 +97,9 @@ angular.module('grumblehissApp')
     // POST
     $scope.renameTo = function(child, newName) {
       return $http.post(child.links.move, {
-        action: 'move', path: child.attributes.path, rename: newName
+        action: 'move', rename: newName,
+        path: child.attributes.path,
+        provider: child.attributes.provider
       });
     };
     $scope.moveTo = function(child, path) {
