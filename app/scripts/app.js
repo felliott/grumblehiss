@@ -18,7 +18,7 @@ angular
     'ngTouch',
 
     'restangular',
-    'angularFileUpload'
+    'ngFileUpload'
   ])
   .config(function ($routeProvider, $httpProvider, RestangularProvider) {
 
