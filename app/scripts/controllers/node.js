@@ -52,7 +52,7 @@ angular.module('grumblehissApp')
 
 
     $scope.inspectChild = function(child) {
-      $scope.inspecteeNewFile = {};
+      delete $scope.inspecteeNewFile;
       $scope.inspecteeNewFolder = '';
       $scope.inspecteeRename = '';
       $scope.moveAction = '';
