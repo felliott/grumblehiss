@@ -85,6 +85,7 @@
       </div>
 
       <div class="grouping">
+        <h5>Rename</h5>
         <div class="input-group">
           <input type="text" class="form-control" ng-model="inspecteeRename" />
           <span class="input-group-btn">
@@ -94,6 +95,7 @@
       </div>
 
       <div class="grouping">
+        <h5>Move / Copy</h5>
         <select class="form-control" ng-model="moveTarget" ng-options="folder as folder.attributes.name for folder in allFolders"></select>
         <label><input type="radio" ng-model="moveAction" value="move">Move</label>
         <label><input type="radio" ng-model="moveAction" value="copy">Copy</label>
@@ -101,16 +103,19 @@
       </div>
 
       <div ng-show="isFolder(inspectee)" class="grouping">
+        <h5>Upload File</h5>
         <div class="btn btn-primary" ngf-select ng-model="inspecteeNewFile" name="file">Select</div>
         <a class="btn btn-default" ng-click="uploadFile(inspectee, inspecteeNewFile)">Upload File</a>
       </div>
 
       <div ng-show="isFile(inspectee)" class="grouping">
+        <h5>Update File</h5>
         <div class="btn btn-primary" ngf-select ng-model="file" name="file">Select</div>
         <a class="btn btn-default" ng-click="updateFile(inspectee, file)">Update File</a>
       </div>
 
       <div ng-show="isFolder(inspectee)" class="grouping">
+        <h5>Create Subfolder</h5>
         <div class="input-group">
           <input type="text" class="form-control" ng-model="inspecteeNewFolder" />
           <span class="input-group-btn">
