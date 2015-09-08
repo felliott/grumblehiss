@@ -34,8 +34,10 @@
       </div>
 
       <div class="grouping">
-        <a title="delete" ng-show="!isFolder(child)" class="btn btn-danger btn-sm"
-           ng-click="rmFile(child)">delete</a>
+        <a title="delete" ng-show="isFile(child)" class="btn btn-danger"
+           ng-click="rmFile(child)">Delete</a>
+        <a title="delete" ng-show="isFolder(child)" class="btn btn-danger"
+           ng-click="rmTree(child)">Delete</a>
       </div>
 
       <div class="grouping">

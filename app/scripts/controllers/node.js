@@ -96,7 +96,7 @@ angular.module('grumblehissApp')
       if (child.attributes.type === 'file') {
         throw 'rmTree() is not valid for a file. Perhaps you wanted delete()?';
       }
-      return $http.delete(child.links.info);
+      return $http.delete(child.links.upload);
     };
 
 
