@@ -93,9 +93,14 @@ angular.module('grumblehissApp')
       return $http.put(child.links.new_folder, '', {params: {name: folderName}})
         .then(
           function(res) {
-            addAlert(
-              'success', 'Succesfully created subfolder "' + folderName + '"'
-            );
+            if (child.fileTree) {
+              Files.one(res.data.path.replace(/\//g, '')).get().then( function(res) {
+                var newFolder = res;
+                newFolder.parent = _shallowParent(child);
+                child.fileTree.push(newFolder);
+              });
+            }
+            addAlert('success', 'Succesfully created subfolder "' + folderName + '"');
           },
           function(res) {
             addAlert(
