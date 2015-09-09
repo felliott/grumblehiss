@@ -1,3 +1,4 @@
+/* globals _ */
 'use strict';
 
 /**
@@ -22,11 +23,11 @@ angular.module('grumblehissApp')
     $scope.login = function(username, password) {
       $scope.loginFailed = false;
       AuthService.Login(username, password).then(
-        function(response) {
+        function() {
           AuthService.SetCredentials(username, password);
           $location.path('/');
         },
-        function(response) {
+        function() {
           $scope.loginFailed = true;
         }
       );

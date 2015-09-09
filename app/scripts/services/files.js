@@ -16,10 +16,7 @@ services.factory(
        return model;
      });
 
-     var thisService = Restangular.withConfig(function(RestangularConfigurer) {
-     }).service(serviceName);
-
-     return thisService;
+     return Restangular.service(serviceName);
    }
   ]
 );
@@ -39,10 +36,7 @@ services.factory(
        return model;
      });
 
-     var thisService = Restangular.withConfig(function(RestangularConfigurer) {
-     }).service(serviceName);
-
-     return thisService;
+     return Restangular.service(serviceName);
    }
   ]
 );
@@ -61,10 +55,7 @@ services.factory(
        return model;
      });
 
-     var thisService = Restangular.withConfig(function(RestangularConfigurer) {
-     }).service(serviceName);
-
-     return thisService;
+     return Restangular.service(serviceName);
 
    }
   ]

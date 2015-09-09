@@ -22,13 +22,13 @@ services.factory('AuthService',
 
      service.SetCredentials = function (username, password) {
        var basicAuth = _getBasicAuth(username, password);
-       $http.defaults.headers.common['Authorization'] = basicAuth;
+       $http.defaults.headers.common.Authorization = basicAuth;
        Restangular.setDefaultHeaders({'Authorization': basicAuth});
        $cookieStore.put('basicAuth', basicAuth);
      };
 
      service.ClearCredentials = function() {
-       delete $http.defaults.headers.common['Authorization'];
+       delete $http.defaults.headers.common.Authorization;
        Restangular.setDefaultHeaders({'Authorization': ''});
        $cookieStore.remove('basicAuth');
      };

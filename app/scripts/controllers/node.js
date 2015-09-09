@@ -157,7 +157,7 @@ angular.module('grumblehissApp')
     };
     $scope.updateFile = function(child, file) {
       _uploadFile(child, file).then(
-          function(res) {
+          function() {
             addAlert(
               'success', 'Succesfully updated "' + file.name + '".'
             );
@@ -199,7 +199,7 @@ angular.module('grumblehissApp')
         // conflict: true, rename: 'rename',
       })
         .then(
-          function(res) {
+          function() {
             addAlert(
               'success', child.attributes.name +
                 ' was ' + (action === 'move' ? 'moved' : 'copied') +
@@ -221,7 +221,7 @@ angular.module('grumblehissApp')
       var url = child.attributes.kind === 'file' ?
             child.links.download : child.links.upload;
       return $http.delete(url).then(
-        function(res) {
+        function() {
           addAlert(
             'success', child.attributes.kind + ' ' +
               child.attributes.name + ' was successfully deleted.'
