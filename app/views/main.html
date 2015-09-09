@@ -2,15 +2,15 @@
   <div class="col-md-6 col-md-offset-3">
 
     <h3>Your Nodes</h3>
-    <ul class="list-unstyled">
+    <ol>
       <li ng-repeat="node in nodeList">
         <h4>
-          <a class="btn btn-default btn-xs" ng-click="node.showAll = !node.showAll">?</a>
           <a ng-href="#/node/{{node.id}}">{{node.attributes.title}}</a>
+          <a class="btn btn-default btn-xs" ng-click="node.showAll = !node.showAll">Show Raw</a>
         </h4>
         <pre ng-show="node.showAll">{{node | json}}</pre>
         <hr>
       </li>
-    </ul>
+    </ol>
   </div>
 </div>
