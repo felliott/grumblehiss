@@ -59,7 +59,7 @@ angular.module('grumblehissApp')
       delete $scope.inspecteeNewFile;
       $scope.inspectParent = parent;
       $scope.inspecteeNewFolder = '';
-      $scope.inspecteeRename = '';
+      $scope.inspecteeRename = child.attributes.name;
       $scope.moveAction = '';
       $scope.moveTarget = parent.attributes.path;
       $scope.inspectee = child;
