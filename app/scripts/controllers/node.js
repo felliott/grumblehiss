@@ -153,6 +153,7 @@ angular.module('grumblehissApp')
               'success', '"' + child.attributes.name +
                 '" was renamed to "' + newName + '".'
             );
+            child.attributes.name = res.data.name;
           },
           function(res) {
             addAlert(
