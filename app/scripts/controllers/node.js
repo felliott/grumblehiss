@@ -70,7 +70,6 @@ angular.module('grumblehissApp')
     $scope.download = function(child) {
       return $http.get(child.links.download);
     };
-
     $scope.downloadUrlFor = function(child) {
       if (!child) {
         return '';
@@ -87,62 +86,104 @@ angular.module('grumblehissApp')
       if (child.attributes.kind !== 'folder') {
         throw 'nope';
       }
-      return $http.put(child.links.new_folder, '', {params: {name: folderName}});
+      return $http.put(child.links.new_folder, '', {params: {name: folderName}})
+        .then(
+          function(res) {
+            addAlert(
+              'success', 'Succesfully created subfolder "' + folderName + '"'
+            );
+          },
+          function(res) {
+            addAlert(
+              'danger', 'Failed to create subfolder "' + folderName +
+                '" because: ' + res.statusText
+            );
+          }
+        );
     };
     $scope.uploadFile = function (child, file) {
-        Upload.http({
-          method: 'PUT',
-          url: child.links.upload,
-          data: file,
-          params: {
-            kind: 'file',
-            name: file.name
+      _uploadFile(child, file).then(
+          function(res) {
+            addAlert(
+              'success', 'Succesfully uploaded "' + file.name +
+                '" to "' + child.attributes.name + '".'
+            );
+          },
+          function(res) {
+            addAlert(
+              'danger', 'Failed to upload "' + file.name +
+                '" to "' + child.attributes.name + '" because: ' + res.statusText
+            );
           }
-        }).progress(function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-        }).success(function (data, status, headers, config) {
-            console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-        }).error(function (data, status, headers, config) {
-            console.log('error status: ' + status);
-        });
+      );
     };
-    $scope.updateFile = function(child, file) { // file
-        Upload.http({
-          method: 'PUT',
-          url: child.links.upload,
-          data: file,
-          params: {
-            kind: 'file',
-            name: file.name
+    $scope.updateFile = function(child, file) {
+      _uploadFile(child, file).then(
+          function(res) {
+            addAlert(
+              'success', 'Succesfully updated "' + file.name + '".'
+            );
+          },
+          function(res) {
+            addAlert(
+              'danger', 'Failed to update "' + file.name +
+                '" because: ' + res.statusText
+            );
           }
-        }).progress(function (evt) {
-            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
-        }).success(function (data, status, headers, config) {
-            console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
-        }).error(function (data, status, headers, config) {
-            console.log('error status: ' + status);
-        });
+      );
     };
-
+    function _uploadFile(child, file) {
+      return Upload.http({
+        method: 'PUT',
+        url: child.links.upload,
+        data: file,
+        params: {
+          kind: 'file',
+          name: file.name
+        }
+      });
+    }
 
     // POST
     $scope.renameTo = function(child, newName) {
-      return $http.post(child.links.move, {
-        action: 'rename', rename: newName
-        // path: child.attributes.path,
-        // provider: child.attributes.provider,
-        // resource: $scope.thisNode.id
-      });
+      return $http.post(child.links.move, {action: 'rename', rename: newName})
+        .then(
+          function(res) {
+            addAlert(
+              'success', '"' + child.attributes.name +
+                '" was renamed to "' + newName + '".'
+            );
+          },
+          function(res) {
+            addAlert(
+              'danger', 'Could not rename "' + child.attributes.name +
+                '" to "' + newName + '" because: ' + res.statusText
+            );
+          }
+        );
+
     };
     $scope.moveOrCopyTo = function(child, action, moveDir) {
       return $http.post(child.links.move, {
         action: action, path: moveDir
-        // provider: moveDir.attributes.provider,
         // resource: $scope.thisNode.id
         // conflict: true, rename: 'rename',
-      });
+      })
+        .then(
+          function(res) {
+            addAlert(
+              'success', child.attributes.name +
+                ' was ' + (action === 'move' ? 'moved' : 'copied') +
+                ' to "' + moveDir + '".'
+            );
+          },
+          function(res) {
+            addAlert(
+              'danger', 'Could not ' + action + ' ' + child.attributes.name +
+                ' to "' + moveDir + '" because: ' + res.statusText
+            );
+          }
+        );
     };
 
     // DELETE
@@ -150,7 +191,30 @@ angular.module('grumblehissApp')
       var url = child.attributes.kind === 'file'
             ? child.links.download
             : child.links.upload;
-      return $http.delete(url);
+      return $http.delete(url).then(
+        function(res) {
+          addAlert(
+            'success', child.attributes.kind + ' ' +
+              child.attributes.name + ' was successfully deleted.'
+          );
+        },
+        function(res) {
+          addAlert(
+            'danger', 'Could not delete ' + child.attributes.name +
+              ' because: ' + res.statusText
+          );
+        }
+      );
+    };
+
+
+    function addAlert(type, msg) {
+      $scope.alerts.push({class: 'alert-' + type, msg: msg});
+    }
+
+    $scope.alerts = [];
+    $scope.dismissAlert = function(alertIdx) {
+      $scope.alerts.splice(alertIdx, 1);
     };
 
   });
