@@ -14,10 +14,31 @@ angular.module('grumblehissApp')
       return _.clone(_.omit(Restangular.stripRestangular(parent), 'fileTree'));
     }
 
+    function _findParentOf(child) {
+      var nodesToSearch = [],
+          currentNode = $scope.thisNode,
+          findChild = function(nodeChild) { return nodeChild.id === child.id;},
+          addNodeToSearchList = function(childNode) { nodesToSearch.push(childNode); };
+      while (currentNode) {
+        if (currentNode.fileTree) {
+            if (_.find(currentNode.fileTree, findChild)) {
+              return currentNode;
+            }
+
+          _.forEach(currentNode.fileTree, addNodeToSearchList);
+        }
+
+        currentNode = nodesToSearch.shift();
+      }
+
+      return null;
+    }
+
     $scope.thisNode = node;
     node.getFiles().then( function(res) {
-      $scope.fileTree = res;
-      _.forEach($scope.fileTree, function(child) { child.parent = _shallowParent($scope.thisNode.plain()); });
+      var shallowParent = _shallowParent($scope.thisNode);
+      $scope.thisNode.fileTree = res;
+      _.forEach($scope.thisNode.fileTree, function(child) { child.parent = shallowParent; });
       $scope.$broadcast('fileTree::updated', {fileTree: res});
     });
 
@@ -53,10 +74,9 @@ angular.module('grumblehissApp')
 
     $scope.expandFolder = function(folder) {
       Restangular.allUrl('files', folder.relationships.files.links.related).getList().then( function(res) {
+        var shallowParent = _shallowParent(folder);
         folder.fileTree = res;
-        _.forEach(folder.fileTree, function(child) {
-          child.parent = _shallowParent(folder);
-        });
+        _.forEach(folder.fileTree, function(child) { child.parent = shallowParent; });
         $scope.$broadcast('fileTree::updated', {fileTree: res});
       });
     };
@@ -222,6 +242,12 @@ angular.module('grumblehissApp')
             child.links.download : child.links.upload;
       return $http.delete(url).then(
         function() {
+          var actualParent = _findParentOf(child),
+              childIndex;
+          if (actualParent) {
+            childIndex = actualParent.fileTree.indexOf(child);
+            actualParent.fileTree.splice(childIndex, 1);
+          }
           addAlert(
             'success', child.attributes.kind + ' ' +
               child.attributes.name + ' was successfully deleted.'
