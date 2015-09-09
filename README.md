@@ -5,14 +5,16 @@ version 0.12.1.
 
 ## Build & development
 
-   $ git clone git@github.com:felliott/grumblehiss.git
-   $ cd grumblehiss
-   $ npm -g install grunt cli
-   $ npm install
-     # wait, wait, wait some more
-   $ grunt
-   $ bower install
-   $ grunt serve
+```
+$ git clone git@github.com:felliott/grumblehiss.git
+$ cd grumblehiss
+$ npm -g install grunt cli
+$ npm install
+# wait, wait, wait some more
+$ grunt
+$ bower install
+$ grunt serve
+```
 
 Run `grunt` for building and `grunt serve` for preview.
 
