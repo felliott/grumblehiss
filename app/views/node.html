@@ -1,6 +1,6 @@
 
 <style type="text/css">
-  .grouping { margin-top: 5px; }
+  .grouping { margin-top: 10px; }
 
   .inodeName { padding-left: 3em; }
 
@@ -31,103 +31,136 @@
 
 <div class="row">
   <div class="col-md-6">
+    <div class="row">
+      <div class="col-md-12">
 
-    <h3>Node: {{thisNode.attributes.title}}</h3>
+        <h3>Node: <span class="text-info">{{thisNode.attributes.title}}</span></h3>
 
-    <h4>Browse</h4>
-    <div ui-tree>
-      <ul class="list-group" ui-tree-nodes="" ng-model="thisNode.fileTree" id="tree-root">
-        <li class="list-group-item" ng-repeat="child in thisNode.fileTree" ui-tree-node ng-include="'child_renderer.html'"></li>
-      </ul>
+        <h4>Browse</h4>
+        <div ui-tree>
+          <ul class="list-group" ui-tree-nodes="" ng-model="thisNode.fileTree" id="tree-root">
+            <li class="list-group-item" ng-repeat="child in thisNode.fileTree" ui-tree-node ng-include="'child_renderer.html'"></li>
+          </ul>
+        </div>
+
+        <br><br>
+        <h4>Node Properties</h4>
+        <h5>
+          <a class="btn btn-default btn-xs" ng-click="thisNode.showAll = !thisNode.showAll">?</a>
+          All
+        </h5>
+        <pre ng-show="thisNode.showAll">{{thisNode | json}}</pre>
+
+        <h5>
+          <a class="btn btn-default btn-xs" ng-click="thisNode.showAttr = !thisNode.showAttr">?</a>
+          Attributes
+        </h5>
+        <pre ng-show="thisNode.showAttr">{{thisNode.attributes | json}}</pre>
+
+        <h5>
+          <a class="btn btn-default btn-xs" ng-click="thisNode.showLink = !thisNode.showLink">?</a>
+          Links
+        </h5>
+        <pre ng-show="thisNode.showLink">{{thisNode.links | json}}</pre>
+
+        <h5>
+          <a class="btn btn-default btn-xs" ng-click="thisNode.showRel = !thisNode.showRel">?</a>
+          Relationships
+        </h5>
+        <pre ng-show="thisNode.showRel">{{thisNode.relationships | json}}</pre>
+
+      </div>
     </div>
-
-    <br><br>
-    <h4>Node Properties</h4>
-    <h5>
-      <a class="btn btn-default btn-xs" ng-click="thisNode.showAll = !thisNode.showAll">?</a>
-      All
-    </h5>
-    <pre ng-show="thisNode.showAll">{{thisNode | json}}</pre>
-
-    <h5>
-      <a class="btn btn-default btn-xs" ng-click="thisNode.showAttr = !thisNode.showAttr">?</a>
-      Attributes
-    </h5>
-    <pre ng-show="thisNode.showAttr">{{thisNode.attributes | json}}</pre>
-
-    <h5>
-      <a class="btn btn-default btn-xs" ng-click="thisNode.showLink = !thisNode.showLink">?</a>
-      Links
-    </h5>
-    <pre ng-show="thisNode.showLink">{{thisNode.links | json}}</pre>
-
-    <h5>
-      <a class="btn btn-default btn-xs" ng-click="thisNode.showRel = !thisNode.showRel">?</a>
-      Relationships
-    </h5>
-    <pre ng-show="thisNode.showRel">{{thisNode.relationships | json}}</pre>
-
   </div>
   <div class="col-md-6">
     <div class="row">
       <div class="col-md-12">
-    <h4 ng-show="inspectee">{{ isFolder(inspectee) ? 'Folder: ' : 'File: '}}{{inspectee.attributes.name}}</h4>
+        <h3 ng-show="inspectee">{{ isFolder(inspectee) ? 'Folder: ' : 'File: '}}<span class="text-info">{{inspectee.attributes.name}}</span></h3>
 
-    <div ng-show="inspectee">
+        <div ng-show="inspectee">
 
-      <div class="grouping">
-        <div class="input-group">
-          <a class="btn btn-default" ng-click="inspectee.showRaw = !inspectee.showRaw">Show Raw Repsonse</a>
-          <a class="btn btn-default" ng-href="{{downloadUrlFor(inspectee)}}">Download</a>
-          <a class="btn btn-danger" ng-click="deleteThis(inspectee)">Delete</a>
+          <div class="grouping">
+            <div class="input-group">
+              <a class="btn btn-default" ng-click="inspectee.showRaw = !inspectee.showRaw">Show Raw Repsonse</a>
+              <a class="btn btn-default" ng-href="{{downloadUrlFor(inspectee)}}">Download</a>
+              <a class="btn btn-danger" ng-click="deleteThis(inspectee)">Delete</a>
+            </div>
+          </div>
+
+          <pre class="grouping" ng-show="inspectee.showRaw">{{inspectee | json}}</pre>
+
+          <form class="form-inline grouping" ng-submit="renameTo(inspectee, inspecteeRename)">
+            <fieldset>
+              <legend>Rename</legend>
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="inspecteeRename" />
+              </div>
+              <button type="submit" class="btn btn-primary">Rename</button>
+            </fieldset>
+          </form>
+
+          <form class="form form-horizontal grouping" ng-submit="moveOrCopyTo(inspectee, moveAction, moveTarget)">
+            <fieldset>
+              <legend>Move/Copy To</legend>
+              <div class="form-group">
+                <div class="col-md-2">
+                  <label>Action</label>
+                </div>
+                <div class="col-md-10">
+                  <label class="radio-inline"><input type="radio" ng-model="moveAction" value="move">Move</label>
+                  <label class="radio-inline"><input type="radio" ng-model="moveAction" value="copy">Copy</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-2">
+                  <label>Dest. Dir</label>
+                </div>
+                <div class="col-md-10">
+                  <select class="form-control" ng-model="moveTarget" ng-options="folder.attributes.path as folder.attributes.name for folder in allFolders"></select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                  <button type="submit" class="btn btn-primary">Move/Copy</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+
+          <form ng-show="isFolder(inspectee)" class="form form-inline" ng-submit="uploadFile(inspectee, inspecteeNewFile)">
+            <fieldset>
+              <legend>Upload File</legend>
+              <div class="form-group">
+                <div class="btn btn-default" ngf-select ng-model="inspecteeNewFile" name="file">Select</div>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload File</button>
+            </fieldset>
+          </form>
+
+          <form ng-show="isFile(inspectee)" class="form form-inline grouping" ng-submit="updateFile(inspectee, file)">
+            <fieldset>
+              <legend>Update File</legend>
+              <div class="form-group">
+                <div class="btn btn-default" ngf-select ng-model="file" name="file">Select</div>
+              </div>
+              <button type="submit" class="btn btn-primary">Update File</button>
+            </fieldset>
+          </form>
+
+          <form ng-show="isFolder(inspectee)" class="form form-inline grouping" ng-submit="createSubfolder(inspectee, inspecteeNewFolder)">
+            <fieldset>
+              <legend>Create Subfolder</legend>
+              <div class="form-group">
+                <input type="text" class="form-control" ng-model="inspecteeNewFolder" />
+              </div>
+              <button type="submit" class="btn btn-primary">Create Subfolder</button>
+            </fieldset>
+          </form>
+
         </div>
-      </div>
-
-      <div class="grouping">
-        <h5>Rename</h5>
-        <div class="input-group">
-          <input type="text" class="form-control" ng-model="inspecteeRename" />
-          <span class="input-group-btn">
-            <a class="btn btn-default" ng-click="renameTo(inspectee, inspecteeRename)">Rename</a>
-          </span>
-        </div>
-      </div>
-
-      <div class="grouping">
-        <h5>Move / Copy To</h5>
-        <select class="form-control" ng-model="moveTarget" ng-options="folder.attributes.path as folder.attributes.name for folder in allFolders"></select>
-        <label><input type="radio" ng-model="moveAction" value="move">Move</label>
-        <label><input type="radio" ng-model="moveAction" value="copy">Copy</label>
-        <a ng-click="moveOrCopyTo(inspectee, moveAction, moveTarget)" class="btn btn-default">Move/Copy</a>
-      </div>
-
-      <div ng-show="isFolder(inspectee)" class="grouping">
-        <h5>Upload File</h5>
-        <div class="btn btn-primary" ngf-select ng-model="inspecteeNewFile" name="file">Select</div>
-        <a class="btn btn-default" ng-click="uploadFile(inspectee, inspecteeNewFile)">Upload File</a>
-      </div>
-
-      <div ng-show="isFile(inspectee)" class="grouping">
-        <h5>Update File</h5>
-        <div class="btn btn-primary" ngf-select ng-model="file" name="file">Select</div>
-        <a class="btn btn-default" ng-click="updateFile(inspectee, file)">Update File</a>
-      </div>
-
-      <div ng-show="isFolder(inspectee)" class="grouping">
-        <h5>Create Subfolder</h5>
-        <div class="input-group">
-          <input type="text" class="form-control" ng-model="inspecteeNewFolder" />
-          <span class="input-group-btn">
-            <a ng-click="createSubfolder(inspectee, inspecteeNewFolder)" class="btn btn-default">Create Subfolder</a>
-          </span>
-        </div>
-      </div>
-
-      <pre ng-show="inspectee.showRaw">{{inspectee | json}}</pre>
-    </div>
       </div>
       <div class="col-md-12">
-        <h4>Console</h4>
+        <h3>Console</h3>
 
         <div ng-repeat="alert in alerts">
           <div class="alert alert-dismissible" ng-class="alert.class">
