@@ -93,7 +93,7 @@ angular.module('grumblehissApp')
       return $http.put(child.links.new_folder, '', {params: {name: folderName}})
         .then(
           function(res) {
-            if (child.fileTree) {
+            if (child.fileTree) { // only update view if folder expanded
               Files.one(res.data.path.replace(/\//g, '')).get().then( function(res) {
                 var newFolder = res;
                 newFolder.parent = _shallowParent(child);
@@ -113,6 +113,13 @@ angular.module('grumblehissApp')
     $scope.uploadFile = function (child, file) {
       _uploadFile(child, file).then(
           function(res) {
+            if (child.fileTree) { // only update view if folder expanded
+              Files.one(res.data.path.replace(/\//g, '')).get().then( function(res) {
+                var newFile = res;
+                newFile.parent = _shallowParent(child);
+                child.fileTree.push(newFile);
+              } );
+            }
             addAlert(
               'success', 'Succesfully uploaded "' + file.name +
                 '" to "' + child.attributes.name + '".'
