@@ -8,11 +8,15 @@
  * Controller of the grumblehissApp
  */
 angular.module('grumblehissApp')
-  .controller('NodeCtrl', function ($scope, node, Restangular, $http, Upload) {
+  .controller('NodeCtrl', function ($scope, node, Restangular, $http, Upload, Files) {
+    function _shallowParent(parent) {
+      return _.clone(_.omit(Restangular.stripRestangular(parent), 'fileTree'));
+    }
+
     $scope.thisNode = node;
     node.getFiles().then( function(res) {
       $scope.fileTree = res;
-      _.forEach($scope.fileTree, function(child) { child.parent = _.clone($scope.thisNode.plain()); });
+      _.forEach($scope.fileTree, function(child) { child.parent = _shallowParent($scope.thisNode.plain()); });
       $scope.$broadcast('fileTree::updated', {fileTree: res});
     });
 
@@ -45,7 +49,7 @@ angular.module('grumblehissApp')
       Restangular.allUrl('files', folder.relationships.files.links.related).getList().then( function(res) {
         folder.fileTree = res;
         _.forEach(folder.fileTree, function(child) {
-          child.parent = _.clone(_.omit(Restangular.stripRestangular(folder), 'fileTree'));
+          child.parent = _shallowParent(folder);
         });
         $scope.$broadcast('fileTree::updated', {fileTree: res});
       });
