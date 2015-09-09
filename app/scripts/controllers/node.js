@@ -1,3 +1,4 @@
+/* globals _ */
 'use strict';
 
 /**
@@ -42,7 +43,12 @@ angular.module('grumblehissApp')
     };
     $scope.hideSubtree = function(folder) { folder.showContents = false; };
     $scope.toggleFolderOpen = function(folder) {
-      $scope.isFolderExpanded(folder) ? $scope.hideSubtree(folder) : $scope.showSubtree(folder);
+      if ($scope.isFolderExpanded(folder)) {
+        $scope.hideSubtree(folder);
+      }
+      else {
+        $scope.showSubtree(folder);
+      }
     };
 
     $scope.expandFolder = function(folder) {
@@ -68,6 +74,10 @@ angular.module('grumblehissApp')
       $scope.moveTarget = parent.attributes.path;
       $scope.inspectee = child;
     };
+
+    function addAlert(type, msg) {
+      $scope.alerts.push({class: 'alert-' + type, msg: msg});
+    }
 
 
     // GET
@@ -110,6 +120,18 @@ angular.module('grumblehissApp')
           }
         );
     };
+
+    function _uploadFile(child, file) {
+      return Upload.http({
+        method: 'PUT',
+        url: child.links.upload,
+        data: file,
+        params: {
+          kind: 'file',
+          name: file.name
+        }
+      });
+    }
     $scope.uploadFile = function (child, file) {
       _uploadFile(child, file).then(
           function(res) {
@@ -148,17 +170,7 @@ angular.module('grumblehissApp')
           }
       );
     };
-    function _uploadFile(child, file) {
-      return Upload.http({
-        method: 'PUT',
-        url: child.links.upload,
-        data: file,
-        params: {
-          kind: 'file',
-          name: file.name
-        }
-      });
-    }
+
 
     // POST
     $scope.renameTo = function(child, newName) {
@@ -203,11 +215,11 @@ angular.module('grumblehissApp')
         );
     };
 
+
     // DELETE
     $scope.deleteThis = function(child) {  // file
-      var url = child.attributes.kind === 'file'
-            ? child.links.download
-            : child.links.upload;
+      var url = child.attributes.kind === 'file' ?
+            child.links.download : child.links.upload;
       return $http.delete(url).then(
         function(res) {
           addAlert(
@@ -225,13 +237,7 @@ angular.module('grumblehissApp')
     };
 
 
-    function addAlert(type, msg) {
-      $scope.alerts.push({class: 'alert-' + type, msg: msg});
-    }
-
     $scope.alerts = [];
-    $scope.dismissAlert = function(alertIdx) {
-      $scope.alerts.splice(alertIdx, 1);
-    };
+    $scope.dismissAlert = function(alertIdx) { $scope.alerts.splice(alertIdx, 1); };
 
   });
